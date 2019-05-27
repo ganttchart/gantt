@@ -12,7 +12,9 @@ export function createSVG(tag, attrs) {
             parent.appendChild(elem);
         } else if (attr === 'innerHTML') {
             elem.innerHTML = attrs.innerHTML;
-        } else {
+        } else if (attr === 'innerHTML') {
+            elem.textContent = attrs.textContent;
+        }  else {
             elem.setAttribute(attr, attrs[attr]);
         }
     }

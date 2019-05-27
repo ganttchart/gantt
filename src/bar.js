@@ -112,7 +112,7 @@ export default class Bar {
         createSVG('text', {
             x: this.x + this.width / 2,
             y: this.y + this.height / 2,
-            innerHTML: this.task.name,
+            textContent: this.task.name,
             class: 'bar-label',
             append_to: this.bar_group
         });

@@ -60,9 +60,7 @@ export default class Gantt {
         // popup wrapper
         this.popup_wrapper = document.createElement('div');
         this.popup_wrapper.classList.add('popup-wrapper');
-        if (this.$container != null) {
-            this.$container.appendChild(this.popup_wrapper);
-        }
+        // this.$container.appendChild(this.popup_wrapper);
     }
 
     setup_options(options) {
@@ -444,7 +442,7 @@ export default class Gantt {
             createSVG('text', {
                 x: date.lower_x,
                 y: date.lower_y,
-                innerHTML: date.lower_text,
+                textContent: date.lower_text,
                 class: 'lower-text',
                 append_to: this.layers.date
             });
@@ -453,7 +451,7 @@ export default class Gantt {
                 const $upper_text = createSVG('text', {
                     x: date.upper_x,
                     y: date.upper_y,
-                    innerHTML: date.upper_text,
+                    textContent: date.upper_text,
                     class: 'upper-text',
                     append_to: this.layers.date
                 });

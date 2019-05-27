@@ -330,6 +330,8 @@ function createSVG(tag, attrs) {
             parent.appendChild(elem);
         } else if (attr === 'innerHTML') {
             elem.innerHTML = attrs.innerHTML;
+        } else if (attr === 'innerHTML') {
+            elem.textContent = attrs.textContent;
         } else {
             elem.setAttribute(attr, attrs[attr]);
         }
@@ -565,7 +567,7 @@ var Bar = function () {
             createSVG('text', {
                 x: this.x + this.width / 2,
                 y: this.y + this.height / 2,
-                innerHTML: this.task.name,
+                textContent: this.task.name,
                 class: 'bar-label',
                 append_to: this.bar_group
             });
@@ -1061,9 +1063,7 @@ var Gantt = function () {
             // popup wrapper
             this.popup_wrapper = document.createElement('div');
             this.popup_wrapper.classList.add('popup-wrapper');
-            if (this.$container != null) {
-                this.$container.appendChild(this.popup_wrapper);
-            }
+            // this.$container.appendChild(this.popup_wrapper);
         }
     }, {
         key: 'setup_options',
@@ -1570,7 +1570,7 @@ var Gantt = function () {
                     createSVG('text', {
                         x: date.lower_x,
                         y: date.lower_y,
-                        innerHTML: date.lower_text,
+                        textContent: date.lower_text,
                         class: 'lower-text',
                         append_to: this.layers.date
                     });
@@ -1579,7 +1579,7 @@ var Gantt = function () {
                         var $upper_text = createSVG('text', {
                             x: date.upper_x,
                             y: date.upper_y,
-                            innerHTML: date.upper_text,
+                            textContent: date.upper_text,
                             class: 'upper-text',
                             append_to: this.layers.date
                         });

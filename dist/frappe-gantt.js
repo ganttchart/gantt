@@ -1061,7 +1061,9 @@ var Gantt = function () {
             // popup wrapper
             this.popup_wrapper = document.createElement('div');
             this.popup_wrapper.classList.add('popup-wrapper');
-            this.$container.appendChild(this.popup_wrapper);
+            if (this.$container != null) {
+                this.$container.appendChild(this.popup_wrapper);
+            }
         }
     }, {
         key: 'setup_options',

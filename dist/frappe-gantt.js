@@ -330,7 +330,7 @@ function createSVG(tag, attrs) {
             parent.appendChild(elem);
         } else if (attr === 'innerHTML') {
             elem.innerHTML = attrs.innerHTML;
-        } else if (attr === 'innerHTML') {
+        } else if (attr === 'textContent') {
             elem.textContent = attrs.textContent;
         } else {
             elem.setAttribute(attr, attrs[attr]);
@@ -1056,7 +1056,7 @@ var Gantt = function () {
             this.$container = document.createElement('div');
             this.$container.classList.add('gantt-container');
 
-            var parent_element = this.$svg.parentElement;
+            var parent_element = wrapper_element || this.$svg.parentElement;
             parent_element.appendChild(this.$container);
             this.$container.appendChild(this.$svg);
 
@@ -2079,7 +2079,9 @@ var Gantt = function () {
     }, {
         key: 'clear',
         value: function clear() {
-            this.$svg.innerHTML = '';
+            while (this.$svg.firstChild) {
+                this.$svg.removeChild(this.$svg.firstChild);
+            }
         }
     }]);
     return Gantt;

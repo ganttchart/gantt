@@ -53,7 +53,7 @@ export default class Gantt {
         this.$container = document.createElement('div');
         this.$container.classList.add('gantt-container');
 
-        const parent_element = this.$svg.parentElement;
+        const parent_element = wrapper_element || this.$svg.parentElement;
         parent_element.appendChild(this.$container);
         this.$container.appendChild(this.$svg);
 
@@ -916,7 +916,9 @@ export default class Gantt {
      * @memberof Gantt
      */
     clear() {
-        this.$svg.innerHTML = '';
+        while(this.$svg.firstChild) {
+            this.$svg.removeChild(this.$svg.firstChild);
+        }
     }
 }
 

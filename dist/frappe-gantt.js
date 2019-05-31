@@ -823,7 +823,7 @@ var Bar = function () {
                 label.setAttribute('x', bar.getX() + bar.getWidth() + 5);
             } else {
                 label.classList.remove('big');
-                label.setAttribute('x', bar.getX() + bar.getWidth() / 2);
+                label.setAttribute('x', bar.getX() + bar.getWidth() / 2 - label.getBBox().width / 2);
             }
         }
     }, {

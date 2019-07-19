@@ -227,8 +227,12 @@ export default class Gantt {
             this.gantt_start = date_utils.add(this.gantt_start, -7, 'day');
             this.gantt_end = date_utils.add(this.gantt_end, 7, 'day');
         } else if (this.view_is('Month')) {
-            this.gantt_start = date_utils.start_of(this.gantt_start, 'year');
-            this.gantt_end = date_utils.add(this.gantt_end, 1, 'year');
+            this.gantt_start = date_utils.start_of(
+                date_utils.add(this.gantt_start, -1, 'month'),
+                'month');
+            this.gantt_end = date_utils.start_of(
+                date_utils.add(this.gantt_end, 1, 'month'),
+                'month');
         } else if (this.view_is('Year')) {
             this.gantt_start = date_utils.add(this.gantt_start, -2, 'year');
             this.gantt_end = date_utils.add(this.gantt_end, 2, 'year');
@@ -242,7 +246,8 @@ export default class Gantt {
         this.dates = [];
         let cur_date = null;
 
-        while (cur_date === null || cur_date < this.gantt_end) {
+        while (cur_date === null || cur_date < this.gantt_end || 
+            (this.view_is('Month') && this.dates.length < 10)) {
             if (!cur_date) {
                 cur_date = date_utils.clone(this.gantt_start);
             } else {

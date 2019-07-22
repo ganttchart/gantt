@@ -371,11 +371,9 @@ export default class Bar {
         const bar = this.$bar,
             label = this.group.querySelector('.bar-label');
 
-        if (label.getBBox().width > bar.getWidth()) {
-            label.classList.add('big');
+        if (label.getBBox().width + 10 > bar.getWidth()) {
             label.setAttribute('x', bar.getX() + bar.getWidth() + 5);
         } else {
-            label.classList.remove('big');
             label.setAttribute('x', (bar.getX() + bar.getWidth() / 2)  - (label.getBBox().width / 2));
         }
     }

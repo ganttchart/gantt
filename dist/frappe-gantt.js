@@ -818,11 +818,9 @@ var Bar = function () {
             var bar = this.$bar,
                 label = this.group.querySelector('.bar-label');
 
-            if (label.getBBox().width > bar.getWidth()) {
-                label.classList.add('big');
+            if (label.getBBox().width + 10 > bar.getWidth()) {
                 label.setAttribute('x', bar.getX() + bar.getWidth() + 5);
             } else {
-                label.classList.remove('big');
                 label.setAttribute('x', bar.getX() + bar.getWidth() / 2 - label.getBBox().width / 2);
             }
         }
@@ -1294,7 +1292,7 @@ var Gantt = function () {
             this.gantt_end = date_utils.start_of(this.gantt_end, 'day');
 
             // add date padding on both sides
-            if (this.view_is(['Quarter Day', 'Half Day'])) {
+            if (this.view_is(['Quarter Day', 'Half Day', 'Week'])) {
                 this.gantt_start = date_utils.add(this.gantt_start, -7, 'day');
                 this.gantt_end = date_utils.add(this.gantt_end, 7, 'day');
             } else if (this.view_is('Month')) {
@@ -1314,7 +1312,7 @@ var Gantt = function () {
             this.dates = [];
             var cur_date = null;
 
-            while (cur_date === null || cur_date < this.gantt_end || this.view_is('Month') && this.dates.length < 10) {
+            while (cur_date === null || cur_date < this.gantt_end || (this.view_is('Month') || this.view_is('Week')) && this.dates.length < 10) {
                 if (!cur_date) {
                     cur_date = date_utils.clone(this.gantt_start);
                 } else {
@@ -1347,6 +1345,7 @@ var Gantt = function () {
             this.map_arrows_on_bars();
             this.set_width();
             this.set_scroll_position();
+            this.make_today_line();
         }
     }, {
         key: 'setup_layers',
@@ -1603,6 +1602,42 @@ var Gantt = function () {
                         throw _iteratorError7;
                     }
                 }
+            }
+        }
+    }, {
+        key: 'make_today_line',
+        value: function make_today_line() {
+            var x = void 0;
+            var _options = this.options,
+                step = _options.step,
+                column_width = _options.column_width;
+
+            if (this.view_is('Month')) {
+                var diff = date_utils.diff(date_utils.today(), this.gantt_start, 'day');
+                x = diff * column_width / 30;
+            }
+
+            if (this.view_is('Week')) {
+                var _diff = date_utils.diff(date_utils.today(), this.gantt_start, 'hour');
+                x = _diff / step * column_width;
+            }
+
+            if (this.view_is('Month') || this.view_is('Week')) {
+                var color = '#039EE4';
+
+                createSVG('path', {
+                    d: 'M ' + x + ' 0 v 1000',
+                    append_to: this.$svg,
+                    stroke: color
+                });
+
+                createSVG('circle', {
+                    cx: x,
+                    cy: -2,
+                    r: 4,
+                    fill: color,
+                    append_to: this.$svg
+                });
             }
         }
     }, {

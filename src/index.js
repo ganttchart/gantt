@@ -223,7 +223,7 @@ export default class Gantt {
         this.gantt_end = date_utils.start_of(this.gantt_end, 'day');
 
         // add date padding on both sides
-        if (this.view_is(['Quarter Day', 'Half Day'])) {
+        if (this.view_is(['Quarter Day', 'Half Day', 'Week'])) {
             this.gantt_start = date_utils.add(this.gantt_start, -7, 'day');
             this.gantt_end = date_utils.add(this.gantt_end, 7, 'day');
         } else if (this.view_is('Month')) {
@@ -247,7 +247,7 @@ export default class Gantt {
         let cur_date = null;
 
         while (cur_date === null || cur_date < this.gantt_end || 
-            (this.view_is('Month') && this.dates.length < 10)) {
+            ((this.view_is('Month') || this.view_is('Week')) && this.dates.length < 10)) {
             if (!cur_date) {
                 cur_date = date_utils.clone(this.gantt_start);
             } else {
@@ -282,6 +282,7 @@ export default class Gantt {
         this.map_arrows_on_bars();
         this.set_width();
         this.set_scroll_position();
+        this.make_today_line();
     }
 
     setup_layers() {
@@ -468,6 +469,38 @@ export default class Gantt {
                     $upper_text.remove();
                 }
             }
+        }
+    }
+
+    make_today_line() {
+        let x;
+        const { step, column_width } = this.options;
+        if (this.view_is('Month')) {
+            const diff = date_utils.diff(date_utils.today(), this.gantt_start, 'day');
+            x = diff * column_width / 30;
+        }
+
+        if (this.view_is('Week')) {
+            const diff = date_utils.diff(date_utils.today(), this.gantt_start, 'hour');
+            x = diff / step * column_width;
+        }
+
+        if (this.view_is('Month') || this.view_is('Week')) {
+            let color = '#039EE4';
+
+            createSVG('path', {
+                d: `M ${x} 0 v 1000`,
+                append_to: this.$svg,
+                stroke: color
+            });
+    
+            createSVG('circle', {
+              cx: x,
+              cy: -2,
+              r: 4,
+              fill: color,
+              append_to: this.$svg
+            });
         }
     }
 

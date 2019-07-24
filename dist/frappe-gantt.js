@@ -1656,8 +1656,12 @@ var Gantt = function () {
     }, {
         key: 'get_date_info',
         value: function get_date_info(date, last_date, i) {
+            var offset = 0;
             if (!last_date) {
                 last_date = date_utils.add(date, 1, 'year');
+                if (this.view_is('Month')) {
+                    offset = date_utils.diff(this.gantt_start, date_utils.start_of(this.gantt_start, 'year'), 'month') * this.options.column_width;
+                }
             }
             var date_text = {
                 'Quarter Day_lower': date_utils.format(date, 'HH', this.options.language),
@@ -1698,7 +1702,7 @@ var Gantt = function () {
             return {
                 upper_text: date_text[this.options.view_mode + '_upper'],
                 lower_text: date_text[this.options.view_mode + '_lower'],
-                upper_x: base_pos.x + x_pos[this.options.view_mode + '_upper'],
+                upper_x: base_pos.x + x_pos[this.options.view_mode + '_upper'] - offset,
                 upper_y: base_pos.upper_y,
                 lower_x: base_pos.x + x_pos[this.options.view_mode + '_lower'],
                 lower_y: base_pos.lower_y
